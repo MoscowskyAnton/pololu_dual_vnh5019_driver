@@ -62,8 +62,8 @@ float M1_calculate_speed(){
     M1_ticks = 0;
     M1_start_ticking = millis();  
   }  
-  float speed_ticks_per_millis = 2 * 3.1415 * 1000 * float(M1_ticks) / (dt * TPR);
-  return speed_ticks_per_millis;
+  float speed_rad_per_sec = 2 * 3.1415 * 1000 * float(M1_ticks) / (dt * TPR);
+  return speed_rad_per_sec;
 }
 
 
