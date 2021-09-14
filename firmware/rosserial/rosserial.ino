@@ -73,6 +73,14 @@ ros::Publisher motor_info_pub("~motor_info", &motor_info_msg);
 ros::Subscriber<std_msgs::Float32MultiArray> target_speed_sub("motor_speed", &target_speed_cb);
 
 /* REAL */
+char buf[32];
+
+char* gd(double src){
+  char* result;
+  result = (char*)malloc(sizeof(char)*10);
+  dtostrf(src, 6, 2, result);
+  return result;
+}
 
 void setup() {  
   // ROS
@@ -90,6 +98,9 @@ void setup() {
   nh.getParam("~kI", &kI, 1);
   nh.getParam("~kD", &kD, 1);
 
+  sprintf(buf,"PID=[%s,%s,%s]", gd(kP), gd(kI), gd(kD));
+  nh.logwarn(buf);
+    
   // motor
   md.init();    
   integrated_speed[0] = integrated_speed[1] = 0;
@@ -157,7 +168,7 @@ void sendData(){
   motor_info_pub.publish(&motor_info_msg);
 }
 
-char buf[10];
+
 
 void loop() {
   //sprintf(buf, "%i", M1_ticks);
@@ -185,5 +196,5 @@ void loop() {
   }
   sendData();
   nh.spinOnce();
-  delay(30);
+  //delay(30);
 }
