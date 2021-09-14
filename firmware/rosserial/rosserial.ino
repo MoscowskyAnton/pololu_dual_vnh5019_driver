@@ -18,8 +18,8 @@
 #define M1EN1 3
 #define M1EN2 5
 
-#define M2EN1 3
-#define M2EN2 5
+#define M2EN1 18
+#define M2EN2 19
 
 /* MOTORS */
 DualVNH5019MotorShield md(M1INA, M1INB, M1PWM, M1ENDIAG, M1CS, M2INA, M2INB, M2PWM, M2ENDIAG, M2CS);
@@ -106,7 +106,7 @@ void setup() {
   integrated_speed[0] = integrated_speed[1] = 0;
   // encoder
   attachInterrupt( digitalPinToInterrupt(M1EN1), m1_encoder_cb, CHANGE);
-  //attachInterrupt( digitalPinToInterrupt(M2EN1), m2_encoder_cb, CHANGE);
+  attachInterrupt( digitalPinToInterrupt(M2EN1), m2_encoder_cb, CHANGE);
   // PIDs
   M1PID = new PID(input_speed, output_speed, target_speed, kP, kI, kD, DIRECT);
   M1PID->SetMode(AUTOMATIC);
@@ -121,7 +121,6 @@ void setup() {
 float M1_calculate_speed(){
   unsigned long dt = millis() - M1_start_ticking;    
   float speed_rad_per_sec = 2.0 * 3.1415 * 1000.0 * float(M1_ticks) / float(dt * TPR);
-
   if( dt > speed_calc_freq_ms ){
     M1_ticks = 0;
     M1_start_ticking = millis();
@@ -131,15 +130,11 @@ float M1_calculate_speed(){
 
 float M2_calculate_speed(){
   unsigned long dt = millis() - M2_start_ticking;  
-  /*
-  if( abs(M2_ticks) > ticks_window_size ){
+  float speed_rad_per_sec = 2.0 * 3.1415 * 1000.0 * float(M2_ticks) / float(dt * TPR);
+  if( dt > speed_calc_freq_ms ){
     M2_ticks = 0;
-    M2_start_ticking = millis();  
-  } 
-  */ 
-  float speed_rad_per_sec = 2 * 3.1415 * 1000 * float(M2_ticks) / (dt * TPR);
-  M2_ticks = 0;
-  M2_start_ticking = millis();
+    M2_start_ticking = millis();
+  }
   return speed_rad_per_sec;
 }
 
