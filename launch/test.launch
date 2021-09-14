@@ -2,14 +2,20 @@
 <launch> 
     
     <node name="rosserial0" pkg="rosserial_python" type="serial_node.py" output="screen">
-            <param name="port" value="/dev/ttyACM0"/>            
-            <param name="baud" value="57600"/>                                                
-            
-            <param name="kP" value="1" type="double"/>
-            <param name="kI" value="0.05" type="double"/>
-            <param name="kD" value="0.1" type="double"/>                                                                                             
-            
+        <param name="port" value="/dev/ttyACM0"/>            
+        <param name="baud" value="57600"/>                                                
+        
+        <param name="kP" value="1" type="double"/>
+        <param name="kI" value="0.05" type="double"/>
+        <param name="kD" value="0.1" type="double"/>                                                                                                         
     </node>
-    
+        
+    <!--<node name="base_driver" pkg="pololu_dual_vnh5019_driver" type="base_driver_node">
+        <param name="lw_joint" value="lwheel_j"/>
+        <param name="rw_joint" value="rwheel_j"/>   
+        
+        <remap name="motor_info" value="rosserial0/motor_info"/>
+        
+    </node>-->
     
 </launch>
